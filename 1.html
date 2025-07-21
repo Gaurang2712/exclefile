@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit to Google Sheet</title>
+</head>
+<body>
+  <h2>Submit Data</h2>
+  <form id="dataForm" name="submit-to-google-sheet">
+    <input type="text" name="name" placeholder="Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <button type="submit">Submit</button>
+  </form>
+  <p id="msg"></p>
+
+  <script>
+    const form = document.forms['submit-to-google-sheet'];
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch('https://script.google.com/macros/s/AKfycbzjRxKq6Q3VTsq4AhO9uyENU8rKgBovkBau_oebcnULTyx_U_3-cSKVZ1xBisYK-qdq-A/exec', {
+        method: 'POST',
+        body: new FormData(form)
+      })
+      .then(response => response.text())
+      .then(data => {
+        msg.innerHTML = "Form submitted successfully!";
+        form.reset();
+      })
+      .catch(error => {
+        msg.innerHTML = "Something went wrong: " + error;
+      });
+    });
+  </script>
+</body>
+</html>
